@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import WatchProviders from "@/components/watch-providers";
-import { Movie } from "@/lib/types";
+import { Movie, TvShow } from "@/lib/types";
+import { WatchProvidersAvailableRegions200Response } from "@/tmbd-types/api";
 import { ArrowLeft, Play, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,8 +15,7 @@ export default async function FilmDetails({
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDkzNmNiNjI3ZDQxMzY2MWQ2NGM2YTBjMzNlM2U2ZCIsIm5iZiI6MTcyNjQ0MDkzOC4wODg4MzgsInN1YiI6IjY2ZGNhZjgxZTRmMjVlMTg1MmU0MTQxNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AYLDR2U6KZAZGRMIIAcVmiY4PdhnlAHACkI28fVli_Q",
+      Authorization: `Bearer ${process.env.TMDB_API_ACCESS_TOKEN}`,
     },
   };
 
@@ -24,22 +24,51 @@ export default async function FilmDetails({
     options,
   );
 
-  const movie: Movie = await response.json();
+  const responseRegions = await fetch(
+    "https://api.themoviedb.org/3/watch/providers/regions?language=en-US",
+    {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDkzNmNiNjI3ZDQxMzY2MWQ2NGM2YTBjMzNlM2U2ZCIsIm5iZiI6MTcyNjQ0MDkzOC4wODg4MzgsInN1YiI6IjY2ZGNhZjgxZTRmMjVlMTg1MmU0MTQxNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AYLDR2U6KZAZGRMIIAcVmiY4PdhnlAHACkI28fVli_Q",
+      },
+      next: {
+        revalidate: 604800,
+      },
+    },
+  );
+  const regions: WatchProvidersAvailableRegions200Response =
+    await responseRegions.json();
 
-  // get year from release date
-  const releaseYear = movie.release_date
-    ? new Date(movie.release_date).getFullYear()
-    : null;
+  const { type } = params;
 
-  const watchProviders = movie["watch/providers"].results;
+  let releaseYear;
+  let title;
+
+  const film: Movie | TvShow = await response.json();
+
+  if (type === "movie" && "release_date" in film) {
+    releaseYear = film.release_date
+      ? new Date(film.release_date).getFullYear()
+      : null;
+    title = film.title;
+  } else if (type === "tv" && "first_air_date" in film) {
+    releaseYear = film.first_air_date
+      ? new Date(film.first_air_date).getFullYear()
+      : null;
+    title = film.name;
+  }
+
+  const watchProviders = film["watch/providers"].results;
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-black text-white">
       {/* background image */}
       <div className="absolute inset-0">
         <Image
-          src={`https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`}
-          alt={`${movie.title} Backdrop image`}
+          src={`https://image.tmdb.org/t/p/w1280/${film.backdrop_path}`}
+          alt={`${title} Backdrop image`}
           fill
           className="object-cover opacity-90"
           sizes="100vw"
@@ -57,22 +86,22 @@ export default async function FilmDetails({
       </Link>
 
       {/* div with main info */}
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 py-20 md:flex-row">
-        <div className="relative aspect-[2/3] w-full max-w-sm self-start overflow-hidden rounded-lg shadow-2xl sm:mt-16">
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 py-20 lg:flex-row">
+        <div className="relative aspect-[2/3] w-full max-w-sm overflow-hidden rounded-lg shadow-2xl sm:mt-16">
           <Image
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={`${movie.title} poster`}
+            src={`https://image.tmdb.org/t/p/w500${film.poster_path}`}
+            alt={`${title} poster`}
             fill
-            className="object-cover"
+            className="object-scale-down"
             sizes="(max-width: 768px) 100vw, 384px"
             priority
           />
         </div>
 
-        {/* movie info */}
-        <div className="flex flex-1 flex-col items-start">
+        {/* main content area */}
+        <div className="flex w-full max-w-2xl flex-col items-start">
           <h1 className="mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
-            {movie.title}
+            {title}
           </h1>
 
           <div className="items-center md:flex md:space-x-12 md:pb-8 md:pt-4">
@@ -84,12 +113,12 @@ export default async function FilmDetails({
             <div className="mb-6 flex items-center md:mb-0">
               <StarIcon className="mr-2 h-6 w-6 text-yellow-400" />
               <span className="text-2xl font-semibold">
-                {movie.vote_average?.toFixed(1)}
+                {film && film.vote_average?.toFixed(1)}
               </span>
             </div>
 
             <div className="mb-8 md:mb-0">
-              {movie.genres?.map((genre, index) => (
+              {film.genres?.map((genre, index) => (
                 <span
                   key={index}
                   className="mb-2 mr-2 inline-block rounded-full bg-gray-800 px-4 py-2 text-sm font-semibold"
@@ -101,19 +130,23 @@ export default async function FilmDetails({
           </div>
 
           <p className="mb-10 text-lg leading-relaxed text-gray-300">
-            {movie.overview}
+            {film.overview}
           </p>
 
-          <div className="flex w-full flex-col items-start justify-between sm:flex-row">
+          {/* play button and watch providers */}
+          <div className="relative flex w-full flex-col items-center justify-between sm:flex-row sm:items-start">
             <Button
               size="lg"
-              className="mb-12 transform rounded-xl bg-white px-6 py-6 text-xl font-bold text-black transition-all duration-300 ease-in-out hover:scale-105 hover:bg-gray-200 sm:mb-0 sm:mt-20"
+              className="z-10 mb-12 text-lg font-bold sm:mb-0 sm:mt-20"
             >
-              <Play className="mr-2 size-6" fill="black" /> Play Now
+              <Play className="mr-2 size-6" fill="black" /> Play
             </Button>
 
-            <div className="flex w-full justify-end pl-4">
-              <WatchProviders watchProviders={watchProviders} />
+            <div className="absolute flex w-full justify-center pb-20 pt-24 sm:justify-end sm:pl-4 md:pt-0">
+              <WatchProviders
+                watchProviders={watchProviders}
+                availableRegions={regions.results}
+              />
             </div>
           </div>
         </div>

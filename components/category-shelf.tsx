@@ -3,6 +3,7 @@
 import {
   DiscoverMovie200ResponseResultsInner,
   DiscoverTv200ResponseResultsInner,
+  TrendingAll200ResponseResultsInner,
 } from "@/tmbd-types/api";
 import { SwiperSlide, Swiper, SwiperClass } from "swiper/react";
 import Image from "next/image";
@@ -18,7 +19,7 @@ export default function CategoryShelf({
   category,
   films,
 }: {
-  type: "movie" | "tv";
+  type: "movie" | "tv" | "all";
   category: string;
   films: (
     | DiscoverMovie200ResponseResultsInner
@@ -64,7 +65,39 @@ export default function CategoryShelf({
             },
           }}
         >
-          {type === "movie"
+          {type === "all" &&
+            films &&
+            films.map((film: TrendingAll200ResponseResultsInner) => (
+              <SwiperSlide key={film.id} className="w-auto">
+                <div className="group h-full w-[120px] cursor-pointer sm:w-[185px]">
+                  <Link href={`${film.media_type}/${film.id}`}>
+                    <div className="relative aspect-[2/3] w-full overflow-hidden rounded-sm transition-transform duration-300 ease-in-out group-hover:scale-105">
+                      <Image
+                        src={
+                          screenWidth > 640
+                            ? `https://image.tmdb.org/t/p/w300${film.poster_path}`
+                            : `https://image.tmdb.org/t/p/w154${film.poster_path}`
+                        }
+                        alt={`${film.title ?? film.original_name} Poster`}
+                        className="h-auto w-full object-cover"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-opacity duration-300 group-hover:bg-opacity-50">
+                        <Play
+                          className="scale-50 transform text-white opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+                          size={48}
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                  <p className="mt-2 truncate text-sm text-gray-200 transition-colors duration-300 group-hover:text-white sm:text-base sm:font-semibold">
+                    {film.title ?? film.original_name}
+                  </p>
+                </div>
+              </SwiperSlide>
+            ))}
+          {type === "movie" && films
             ? films.map((film: DiscoverMovie200ResponseResultsInner) => (
                 <SwiperSlide key={film.id} className="w-auto">
                   <div className="group h-full w-[120px] cursor-pointer sm:w-[185px]">

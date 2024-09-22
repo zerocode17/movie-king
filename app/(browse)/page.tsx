@@ -2,8 +2,9 @@ import ErrorUi from "@/components/error-ui";
 import MainCatalog from "@/components/main-catalog";
 import FeaturedMovie from "@/components/featured-movie";
 import { Content } from "@/lib/types";
+import { TrendingAll200ResponseResultsInner } from "@/tmbd-types/api";
 
-export const revalidate = 60 * 60 * 24;
+export const revalidate = 60 * 60 * 12;
 
 export default async function Home() {
   const options = {
@@ -17,13 +18,17 @@ export default async function Home() {
   const endpoints = [
     {
       name: "Trending",
+      url: "https://api.themoviedb.org/3/trending/all/day?language=en-US",
+      type: "all",
+    },
+    {
+      name: "Movies",
       url: "https://api.themoviedb.org/3/trending/movie/day?language=en-US",
       type: "movie",
     },
-
     {
       name: "TV Shows",
-      url: "https://api.themoviedb.org/3/trending/tv/week?language=en-US",
+      url: "https://api.themoviedb.org/3/trending/tv/day?language=en-US",
       type: "tv",
     },
     {
@@ -94,11 +99,14 @@ export default async function Home() {
       .then((data) => ({
         category: endpoint.name,
         films: data.results,
-        type: endpoint.type as "movie" | "tv",
+        type: endpoint.type as "movie" | "tv" | "all",
       })),
   );
 
   const content: Content[] = await Promise.all(fetchPromises);
+  const trending = content[0].films as TrendingAll200ResponseResultsInner[];
+  const id = trending[0].id ?? "";
+  const type = trending[0].media_type as "movie" | "tv";
 
   if (!content) {
     return <ErrorUi />;
@@ -106,7 +114,7 @@ export default async function Home() {
 
   return (
     <main className="">
-      <FeaturedMovie featured={content[0].films[0]} />
+      <FeaturedMovie id={id.toString()} type={type} />
       <MainCatalog data={content} />
     </main>
   );

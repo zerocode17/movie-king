@@ -4,6 +4,8 @@ import {
   MovieDetails200Response,
   MovieWatchProviders200Response,
   TrendingTv200ResponseResultsInner,
+  TvSeriesDetails200Response,
+  TvSeriesWatchProviders200Response,
 } from "@/tmbd-types/api";
 
 export interface Content {
@@ -11,7 +13,7 @@ export interface Content {
   films:
     | DiscoverMovie200ResponseResultsInner[]
     | DiscoverTv200ResponseResultsInner[];
-  type: "movie" | "tv";
+  type: "movie" | "tv" | "all";
 }
 
 export interface Shelf {
@@ -23,4 +25,8 @@ export interface Shelf {
 
 export interface Movie extends MovieDetails200Response {
   "watch/providers": MovieWatchProviders200Response;
+}
+
+export interface TvShow extends TvSeriesDetails200Response {
+  "watch/providers": TvSeriesWatchProviders200Response;
 }

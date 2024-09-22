@@ -1,39 +1,44 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Movie } from "@/lib/types";
 import {
-  MovieWatchProviders200ResponseResults,
   MovieWatchProviders200ResponseResultsDEBuyInner,
   MovieWatchProviders200ResponseResultsUS,
   MovieWatchProviders200ResponseResultsUSFlatrateInner,
   MovieWatchProviders200ResponseResultsUSRentInner,
+  WatchProvidersAvailableRegions200ResponseResultsInner,
 } from "@/tmbd-types/api";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import CountryPicker from "./ui/country-picker";
 
 export default function WatchProviders({
   watchProviders,
+  availableRegions,
 }: {
   watchProviders: Movie["watch/providers"]["results"];
+  availableRegions?: WatchProvidersAvailableRegions200ResponseResultsInner[];
 }) {
-  const [selectedCountry, setSelectedCountry] = useState("US");
+  const [selectedCountry, setSelectedCountry] = useState(
+    "United States of America",
+  );
 
-  if (!watchProviders || Object.keys(watchProviders).length === 0) {
+  if (
+    !watchProviders ||
+    Object.keys(watchProviders).length === 0 ||
+    !availableRegions
+  ) {
     return null;
   }
 
-  const availableCountries = Object.keys(watchProviders);
+  function getCountryISO(value: string) {
+    return availableRegions?.find((region) => region.english_name === value)
+      ?.iso_3166_1;
+  }
 
   const currentProviders = watchProviders[
-    selectedCountry as keyof typeof watchProviders
+    getCountryISO(selectedCountry) as keyof typeof watchProviders
   ] as MovieWatchProviders200ResponseResultsUS | undefined;
 
   const getProviderLogos = (
@@ -43,9 +48,8 @@ export default function WatchProviders({
       | MovieWatchProviders200ResponseResultsUSFlatrateInner[],
   ) => {
     return providers.map((provider, index) => (
-      <div className="w-fit">
+      <div className="w-fit" key={index}>
         <Image
-          key={index}
           src={`https://image.tmdb.org/t/p/w154${provider.logo_path}`}
           alt={`${provider.provider_name} logo`}
           width={50}
@@ -53,34 +57,26 @@ export default function WatchProviders({
           className="rounded-lg object-cover"
         />
         <div className="max-w-16">
-          <span className="text-wrap text-xs leading-3">
+          <span className="text-wrap text-sm leading-[4px]">
             {provider.provider_name}
           </span>
         </div>
       </div>
     ));
   };
-  return (
-    <div className="w-full max-w-[400px]">
-      <h2 className="mb-4 text-2xl font-bold">Watch Providers</h2>
-      <Select onValueChange={(value) => setSelectedCountry(value)}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a country" />
-        </SelectTrigger>
-        <SelectContent>
-          {availableCountries.map((country) => (
-            <SelectItem key={country} value={country}>
-              {country}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
 
-      {selectedCountry && currentProviders && (
+  return (
+    <div className="w-full max-w-[300px] xl:max-w-[400px]">
+      <CountryPicker
+        valueList={availableRegions?.sort((a, b) =>
+          (a.english_name ?? "").localeCompare(b.english_name ?? ""),
+        )}
+        value={selectedCountry}
+        setValue={setSelectedCountry}
+      />
+
+      {selectedCountry && currentProviders ? (
         <div className="mt-4">
-          <h3 className="mb-2 text-xl font-semibold">
-            Available options in {selectedCountry}:
-          </h3>
           {currentProviders.buy && (
             <div className="mb-8">
               <h4 className="mb-2 text-xl font-semibold">Buy</h4>
@@ -113,6 +109,12 @@ export default function WatchProviders({
           >
             View all watching options
           </Link>
+        </div>
+      ) : (
+        <div className="flex justify-center">
+          <p className="pt-12 text-base text-muted-foreground">
+            No providers available in this region
+          </p>
         </div>
       )}
     </div>
