@@ -37,7 +37,7 @@ export default function CategoryShelf({
   }, []);
 
   return (
-    <div className="relative mb-8">
+    <div className="relative mb-14">
       <h3 className="mb-3 text-2xl font-bold">{category}</h3>
       <div
         onMouseEnter={() => {
@@ -81,7 +81,7 @@ export default function CategoryShelf({
                         alt={`${film.title ?? film.original_name} Poster`}
                         className="h-auto w-full object-cover"
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                        sizes="(max-width: 640px) 40vw, (max-width: 768px) 50vw, 33vw"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-opacity duration-300 group-hover:bg-opacity-50">
                         <Play

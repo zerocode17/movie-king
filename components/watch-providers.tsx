@@ -11,7 +11,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import CountryPicker from "./ui/country-picker";
+import CountryPicker from "./country-picker";
+import CountryPickerMobile from "./country-picker-mobile";
 
 export default function WatchProviders({
   watchProviders,
@@ -67,13 +68,24 @@ export default function WatchProviders({
 
   return (
     <div className="w-full max-w-[300px] xl:max-w-[400px]">
-      <CountryPicker
-        valueList={availableRegions?.sort((a, b) =>
-          (a.english_name ?? "").localeCompare(b.english_name ?? ""),
-        )}
-        value={selectedCountry}
-        setValue={setSelectedCountry}
-      />
+      <div className="hidden sm:block">
+        <CountryPicker
+          valueList={availableRegions?.sort((a, b) =>
+            (a.english_name ?? "").localeCompare(b.english_name ?? ""),
+          )}
+          value={selectedCountry}
+          setValue={setSelectedCountry}
+        />
+      </div>
+      <div className="px-4 sm:hidden">
+        <CountryPickerMobile
+          valueList={availableRegions?.sort((a, b) =>
+            (a.english_name ?? "").localeCompare(b.english_name ?? ""),
+          )}
+          value={selectedCountry}
+          setValue={setSelectedCountry}
+        />
+      </div>
 
       {selectedCountry && currentProviders ? (
         <div className="mt-4">

@@ -5,17 +5,24 @@ import { WatchProvidersAvailableRegions200Response } from "@/tmbd-types/api";
 import { ArrowLeft, Play, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import fallbackImage from "/public/fallback.svg";
+import { redirect } from "next/navigation";
 
 export default async function FilmDetails({
   params,
 }: {
   params: { id: string; type: string };
 }) {
+  const { type } = params;
+  if (type !== "movie" && type !== "tv") {
+    redirect("/404");
+  }
+
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: `Bearer ${process.env.TMDB_API_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN}`,
     },
   };
 
@@ -40,8 +47,6 @@ export default async function FilmDetails({
   );
   const regions: WatchProvidersAvailableRegions200Response =
     await responseRegions.json();
-
-  const { type } = params;
 
   let releaseYear;
   let title;
@@ -72,6 +77,7 @@ export default async function FilmDetails({
           fill
           className="object-cover opacity-90"
           sizes="100vw"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-black/70" />
       </div>
@@ -89,7 +95,11 @@ export default async function FilmDetails({
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 py-20 lg:flex-row">
         <div className="relative aspect-[2/3] w-full max-w-sm overflow-hidden rounded-lg shadow-2xl sm:mt-16">
           <Image
-            src={`https://image.tmdb.org/t/p/w500${film.poster_path}`}
+            src={
+              film.poster_path
+                ? `https://image.tmdb.org/t/p/w500/${film.poster_path}`
+                : fallbackImage
+            }
             alt={`${title} poster`}
             fill
             className="object-scale-down"

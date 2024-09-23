@@ -22,7 +22,7 @@ export default async function FeaturedMovie({
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: `Bearer ${process.env.TMDB_API_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN}`,
     },
   };
 
@@ -43,6 +43,7 @@ export default async function FeaturedMovie({
         alt="Featured movie"
         className="object-cover"
         fill
+        sizes="100vw"
         priority
         src={`https://image.tmdb.org/t/p/original${featured.backdrop_path}`}
       />

@@ -25,7 +25,7 @@ export default function Nav() {
   return (
     <header
       className={`fixed top-0 z-50 h-14 w-full transition-colors duration-300 ease-out hover:bg-black ${
-        scrollPosition >= 300 ? "bg-black" : "bg-transparent"
+        scrollPosition >= 300 ? "bg-black" : "bg-gradient-to-b from-black"
       }`}
     >
       <div className="container mx-auto flex h-full items-center px-4 xl:px-0">
