@@ -25,6 +25,7 @@ export class SearchMulti200ResponseResultsInner {
   "genre_ids"?: Array<number>;
   "popularity"?: number = 0;
   "release_date"?: string;
+  "first_air_date"?: string;
   "video"?: boolean = true;
   "vote_average"?: number = 0;
   "vote_count"?: number = 0;

@@ -7,7 +7,6 @@ import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import useSWR from "swr";
 import { SearchMulti200Response } from "@/tmbd-types/api";
-import { PopoverAnchor } from "@radix-ui/react-popover";
 import Image from "next/image";
 import Link from "next/link";
 import fallbackImage from "/public/fallback.svg";
@@ -137,9 +136,23 @@ export default function NavSearch() {
                             className="h-auto w-20 rounded-md object-cover"
                           />
 
-                          <span className="pl-2">
-                            {result.title || result.name}
-                          </span>
+                          <div className="space-y-2 pl-2">
+                            <p className="font-medium">
+                              {result.title || result.name}
+                            </p>
+                            <p className="font-light">
+                              {new Date(
+                                result.release_date ||
+                                  result.first_air_date ||
+                                  "",
+                              ).getFullYear()}
+                            </p>
+                            <p className="font-light text-muted-foreground">
+                              {result.media_type === "movie"
+                                ? "Movie"
+                                : "TV Show"}
+                            </p>
+                          </div>
                         </div>
                       </Link>
                     </li>
