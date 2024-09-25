@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import WatchProviders from "@/components/watch-providers";
 import { Movie, TvShow } from "@/lib/types";
 import { WatchProvidersAvailableRegions200Response } from "@/tmbd-types/api";
-import { ArrowLeft, Play, StarIcon } from "lucide-react";
+import { Play, StarIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import fallbackImage from "/public/fallback.svg";
 import { redirect } from "next/navigation";
+import BackButton from "@/components/back-button";
 
 export default async function FilmDetails({
   params,
@@ -83,13 +83,7 @@ export default async function FilmDetails({
       </div>
 
       {/* back button */}
-      <Link
-        href="/"
-        className="absolute left-8 top-8 z-20 text-white transition-colors hover:text-gray-300"
-        aria-label="Go back to movies list"
-      >
-        <ArrowLeft size={32} />
-      </Link>
+      <BackButton />
 
       {/* div with main info */}
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 py-20 lg:flex-row">
@@ -114,28 +108,38 @@ export default async function FilmDetails({
             {title}
           </h1>
 
+          {/* release year, runtime, rating and genres */}
           <div className="items-center md:flex md:space-x-12 md:pb-8 md:pt-4">
-            {releaseYear && (
-              <p className="mb-4 text-2xl text-gray-400 md:mb-0">
-                {releaseYear}
-              </p>
-            )}
-            <div className="mb-6 flex items-center md:mb-0">
-              <StarIcon className="mr-2 h-6 w-6 text-yellow-400" />
-              <span className="text-2xl font-semibold">
-                {film && film.vote_average?.toFixed(1)}
-              </span>
+            <div className="mb-4 flex items-center space-x-4 text-2xl text-muted-foreground md:mb-0">
+              {releaseYear && <p className="md:mb-0">{releaseYear}</p>}
+              {"runtime" in film && film.runtime && (
+                <>
+                  <span className="leading-3">‧</span>
+                  <span className="w-max font-semibold">
+                    {film.runtime} min
+                  </span>
+                </>
+              )}
+              <span className="leading-3">‧</span>
+              <div className="flex items-center text-foreground">
+                <StarIcon className="h-6 w-6 text-yellow-400" />
+                <span className="pl-2 text-2xl font-semibold">
+                  {film && film.vote_average?.toFixed(1)}
+                </span>
+              </div>
             </div>
 
-            <div className="mb-8 md:mb-0">
-              {film.genres?.map((genre, index) => (
-                <span
-                  key={index}
-                  className="mb-2 mr-2 inline-block rounded-full bg-gray-800 px-4 py-2 text-sm font-semibold"
-                >
-                  {genre.name}
-                </span>
-              ))}
+            <div className="mb-6 flex items-center space-x-8 md:mb-0">
+              <div className="flex flex-wrap gap-2">
+                {film.genres?.map((genre, index) => (
+                  <span
+                    key={index}
+                    className="inline-block rounded-full bg-gray-800 px-4 py-2 text-sm font-semibold md:mb-0"
+                  >
+                    {genre.name}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 

@@ -10,6 +10,8 @@ import { SearchMulti200Response } from "@/tmbd-types/api";
 import Image from "next/image";
 import Link from "next/link";
 import fallbackImage from "/public/fallback.svg";
+import { useRouter } from "next/navigation";
+import { FilterSearch } from "@/lib/filter-search";
 
 const fetcher = (url: string) =>
   fetch(url, {
@@ -27,6 +29,7 @@ export default function NavSearch() {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const router = useRouter();
 
   const toggleSearch = () => {
     if (searchInput && searchInputRef.current && isSearchOpen) {
@@ -68,7 +71,7 @@ export default function NavSearch() {
   );
 
   return (
-    <div className="relative flex items-center">
+    <div className="relative hidden items-center sm:flex">
       <div
         ref={searchContainerRef}
         className={`absolute right-0 top-1/2 -translate-y-1/2 overflow-hidden transition-all duration-300 ease-in-out ${
@@ -89,6 +92,11 @@ export default function NavSearch() {
               aria-label="Search movies and TV shows"
               onInput={(e) => {
                 setSearchInput(e.currentTarget.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  router.push(`/search?query=${searchInput}`);
+                }
               }}
             />
           </PopoverTrigger>
@@ -111,14 +119,7 @@ export default function NavSearch() {
             )}
             {data && data.results && data.results.length > 0 && (
               <ul className="space-y-4">
-                {data.results
-                  .filter(
-                    (result) =>
-                      result.media_type !== "person" &&
-                      result.popularity &&
-                      result.popularity > 10,
-                  )
-                  .sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0))
+                {FilterSearch(data.results)
                   .slice(0, 5)
                   .map((result) => (
                     <li key={result.id}>

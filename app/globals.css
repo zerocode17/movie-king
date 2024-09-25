@@ -39,11 +39,25 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 20px #ffffff;
+    }
+    to {
+      text-shadow:
+        0 0 30px #ffffff,
+        0 0 10px #ffffff;
+    }
+  }
+
+  .glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
 }
 
 @layer base {
   :root {
-    --background: 0 0% 10%;
+    --background: 0 0% 7%;
     --foreground: 240 10% 100%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
