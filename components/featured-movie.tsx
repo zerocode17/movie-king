@@ -6,6 +6,7 @@ import {
 import { Info, Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import FeaturedMobile from "./featured-mobile-poster";
 
 interface Featured extends MovieDetails200Response {
   "images?include_image_language=en": MovieImages200Response;
@@ -38,24 +39,28 @@ export default async function FeaturedMovie({
   const logoHeight = images.logos && images.logos[0].height;
 
   return (
-    <section className="relative h-[95vh] px-2">
+    <section className="relative max-h-[85vh] px-4 sm:h-[95vh]">
       {/* background image */}
       <Image
         alt="Featured movie"
-        className="object-cover"
+        className="hidden object-cover sm:block"
         fill
-        sizes="100vw"
+        sizes="(max-width: 640px) 0vw, 100vw"
         priority
         src={`https://image.tmdb.org/t/p/original${featured.backdrop_path}`}
       />
+      <div className="mt-20 rounded-sm px-4">
+        <FeaturedMobile type={type ?? "all"} film={featured} />
+      </div>
       {/* gradient */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-black/75" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent via-[23%]" />
+      <div className="absolute inset-0 hidden bg-gradient-to-tr from-black/75 sm:block" />
+      {/* lower gradient */}
+      <div className="absolute inset-0 hidden bg-gradient-to-t from-black via-transparent via-[23%] sm:block" />
 
       {/* logo, overview and buttons */}
-      <div className="container relative mx-auto h-full w-full px-3 sm:px-0">
-        <div className="absolute bottom-0 pb-8 sm:bottom-48 sm:pb-12">
-          <div className="pb-4">
+      <div className="container relative mx-auto w-full sm:h-full sm:px-0">
+        <div className="bottom-36 sm:absolute sm:bottom-48 sm:pb-12">
+          <div className="hidden pb-4 sm:block">
             <Image
               src={`https://image.tmdb.org/t/p/original${logoSource}`}
               alt={`${featured.title} logo`}
@@ -68,7 +73,7 @@ export default async function FeaturedMovie({
           <p className="mb-4 hidden max-w-lg text-pretty text-base sm:block">
             {featured.overview}
           </p>
-          <div className="flex space-x-3 sm:space-x-4">
+          <div className="flex space-x-3 pt-12 sm:space-x-4 sm:pt-0">
             <Link href={`${type}/${featured.id}`}>
               <Button className="h-9 text-lg font-bold sm:h-11 sm:px-6">
                 <Play className="mr-2 size-6" fill="black" /> Play

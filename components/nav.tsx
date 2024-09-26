@@ -5,6 +5,8 @@ import { Search, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import NavSearch from "./nav-search";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import logo from "@/public/logo.png";
 
 export default function Nav() {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -38,7 +40,7 @@ export default function Nav() {
           href="/"
         >
           <span className="sr-only">Movie King</span>
-          Movie King
+          <Image src={logo} alt="Movie King Logo" className="size-11" />
         </Link>
         <nav className="mx-6 hidden items-center space-x-4 text-lg font-semibold md:flex lg:space-x-6">
           <Link
