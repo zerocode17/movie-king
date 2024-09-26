@@ -37,7 +37,7 @@ export default function FeaturedMobile({
                 className="h-auto w-full object-cover"
                 fill
                 priority
-                sizes="100vw"
+                sizes="(max-width: 640px) 100vw, 0vw"
                 onLoad={(event) => {
                   const img = event.target as HTMLImageElement;
                   const color = colorThief.getColor(img);
