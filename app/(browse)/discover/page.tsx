@@ -51,7 +51,7 @@ export default function TvShows() {
 
   return (
     <div className="container mx-auto px-4">
-      <h1 className="mt-14 text-4xl font-bold">Trending TV Shows</h1>
+      <h1 className="mt-14 text-4xl font-bold">Trending Shows and Movies</h1>
       <div className="mt-8 grid grid-cols-2 gap-6 pb-20 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
         {films?.map((film, index) => (
           <FilmPoster key={index} type="all" film={film} />
