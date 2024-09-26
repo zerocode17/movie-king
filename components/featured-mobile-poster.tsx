@@ -8,6 +8,7 @@ import {
   TrendingAll200ResponseResultsInner,
 } from "@/tmbd-types/api";
 import ColorThief from "colorthief";
+import { useState, useEffect } from "react";
 
 type Film =
   | TrendingAll200ResponseResultsInner
@@ -21,6 +22,20 @@ export default function FeaturedMobile({
   type: "movie" | "tv" | "all";
   film: Film;
 }) {
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const colorThief = new ColorThief();
 
   return (
@@ -40,7 +55,10 @@ export default function FeaturedMobile({
                 sizes="(max-width: 640px) 100vw, 0vw"
                 onLoad={(event) => {
                   const img = event.target as HTMLImageElement;
-                  const color = colorThief.getColor(img);
+                  let color;
+                  if (img && screenWidth > 640) {
+                    color = colorThief?.getColor(img);
+                  }
                   if (color) {
                     const rgb = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
                     if (img.parentElement) {

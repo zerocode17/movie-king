@@ -9,7 +9,7 @@ import Link from "next/link";
 import FeaturedMobile from "./featured-mobile-poster";
 
 interface Featured extends MovieDetails200Response {
-  "images?include_image_language=en": MovieImages200Response;
+  "images?language=en": MovieImages200Response;
 }
 
 export default async function FeaturedMovie({
@@ -28,15 +28,15 @@ export default async function FeaturedMovie({
   };
 
   const response = await fetch(
-    `https://api.themoviedb.org/3/${type}/${id}?append_to_response=images?include_image_language=en&language=en-US`,
+    `https://api.themoviedb.org/3/${type}/${id}?append_to_response=images?language=en&language=en-US`,
     options,
   );
   const featured: Featured = await response.json();
-  const images = featured["images?include_image_language=en"];
+  const images = featured["images?language=en"];
 
-  const logoSource = images.logos && images.logos[0].file_path;
-  const logoWidth = images.logos && images.logos[0].width;
-  const logoHeight = images.logos && images.logos[0].height;
+  const logoSource = images.logos && images.logos[0]?.file_path;
+  const logoWidth = images.logos && images.logos[0]?.width;
+  const logoHeight = images.logos && images.logos[0]?.height;
 
   return (
     <section className="relative max-h-[85vh] px-4 sm:h-[95vh]">
@@ -49,7 +49,7 @@ export default async function FeaturedMovie({
         priority
         src={`https://image.tmdb.org/t/p/original${featured.backdrop_path}`}
       />
-      <div className="mt-20 rounded-sm px-4 sm:hidden">
+      <div className="mx-auto mt-20 max-w-[360px] rounded-sm px-4 sm:hidden">
         <FeaturedMobile type={type ?? "all"} film={featured} />
       </div>
       {/* gradient */}
@@ -61,14 +61,16 @@ export default async function FeaturedMovie({
       <div className="container relative mx-auto w-full sm:h-full sm:px-0">
         <div className="bottom-36 sm:absolute sm:bottom-48 sm:pb-12">
           <div className="hidden pb-4 sm:block">
-            <Image
-              src={`https://image.tmdb.org/t/p/original${logoSource}`}
-              alt={`${featured.title} logo`}
-              className="h-auto w-full sm:max-w-sm lg:max-w-md"
-              width={logoWidth}
-              height={logoHeight}
-              sizes="(min-width: 2060px) 11.6vw, (min-width: 1940px) 22vw, (min-width: 1280px) 23.28vw, (min-width: 940px) 31.88vw, (min-width: 640px) calc(4.29vw + 255px), (min-width: 480px) 37.86vw, calc(3.75vw + 157px)"
-            />
+            {logoSource && (
+              <Image
+                src={`https://image.tmdb.org/t/p/original${logoSource}`}
+                alt={`${featured.title} logo`}
+                className="h-auto w-full sm:max-w-sm lg:max-w-md"
+                width={logoWidth}
+                height={logoHeight}
+                sizes="(min-width: 2060px) 11.6vw, (min-width: 1940px) 22vw, (min-width: 1280px) 23.28vw, (min-width: 940px) 31.88vw, (min-width: 640px) calc(4.29vw + 255px), (min-width: 480px) 37.86vw, calc(3.75vw + 157px)"
+              />
+            )}
           </div>
           <p className="mb-4 hidden max-w-lg text-pretty text-base sm:block">
             {featured.overview}
