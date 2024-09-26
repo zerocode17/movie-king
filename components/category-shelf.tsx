@@ -61,7 +61,7 @@ export default function CategoryShelf({
         >
           {films &&
             films.map((film: TrendingAll200ResponseResultsInner) => (
-              <SwiperSlide key={film.id} className="w-fit">
+              <SwiperSlide key={film.id} style={{ width: "auto" }}>
                 <div className="w-[120px] sm:w-[185px]">
                   <FilmPoster type={type} film={film} />
                 </div>

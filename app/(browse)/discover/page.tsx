@@ -20,7 +20,7 @@ export default function TvShows() {
       },
     };
     const response = await fetch(
-      `https://api.themoviedb.org/3/trending/tv/week?language=en-US&page=${page}`,
+      `https://api.themoviedb.org/3/trending/all/week?language=en-US&page=${page}`,
       options,
     );
     const data: TrendingAll200Response = await response.json();
