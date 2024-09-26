@@ -49,7 +49,7 @@ export default async function FeaturedMovie({
         priority
         src={`https://image.tmdb.org/t/p/original${featured.backdrop_path}`}
       />
-      <div className="mt-20 rounded-sm px-4">
+      <div className="mt-20 rounded-sm px-4 sm:hidden">
         <FeaturedMobile type={type ?? "all"} film={featured} />
       </div>
       {/* gradient */}
