@@ -22,7 +22,7 @@ export default function FeaturedMobile({
   type: "movie" | "tv" | "all";
   film: Film;
 }) {
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState<number>();
 
   useEffect(() => {
     const handleResize = () => {
@@ -56,7 +56,7 @@ export default function FeaturedMobile({
                 onLoad={(event) => {
                   const img = event.target as HTMLImageElement;
                   let color;
-                  if (img && screenWidth > 640) {
+                  if (img && screenWidth && screenWidth > 640) {
                     color = colorThief?.getColor(img);
                   }
                   if (color) {
