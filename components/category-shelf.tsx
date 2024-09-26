@@ -76,7 +76,7 @@ export default function CategoryShelf({
             ))}
         </Swiper>
       </div>
-      <div className="group absolute -right-[52px] top-11 hidden h-[278px] w-[52px] sm:block">
+      <div className="group absolute -right-[52px] top-11 hidden h-[278px] w-[52px] lg:block">
         <button
           className={`group absolute z-50 h-[278px] px-2 hover:block group-hover:block ${
             isHovered ? "block" : "hidden"

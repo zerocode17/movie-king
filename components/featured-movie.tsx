@@ -38,7 +38,8 @@ export default async function FeaturedMovie({
   const logoHeight = images.logos && images.logos[0].height;
 
   return (
-    <section className="relative h-[70vh] px-2">
+    <section className="relative h-[95vh] px-2">
+      {/* background image */}
       <Image
         alt="Featured movie"
         className="object-cover"
@@ -47,17 +48,21 @@ export default async function FeaturedMovie({
         priority
         src={`https://image.tmdb.org/t/p/original${featured.backdrop_path}`}
       />
+      {/* gradient */}
       <div className="absolute inset-0 bg-gradient-to-tr from-black/75" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent via-[23%]" />
+
+      {/* logo, overview and buttons */}
       <div className="container relative mx-auto h-full w-full px-3 sm:px-0">
-        <div className="absolute bottom-0 pb-8 sm:bottom-4 sm:pb-12">
+        <div className="absolute bottom-0 pb-8 sm:bottom-48 sm:pb-12">
           <div className="pb-4">
             <Image
               src={`https://image.tmdb.org/t/p/original${logoSource}`}
-              alt={`${featured.title}l logo`}
-              className="h-auto w-full"
+              alt={`${featured.title} logo`}
+              className="h-auto w-full sm:max-w-sm lg:max-w-md"
               width={logoWidth}
               height={logoHeight}
-              sizes="(max-width: 640px) 50vw, (max-width: 768px) 40vw, 33vw"
+              sizes="(min-width: 2060px) 11.6vw, (min-width: 1940px) 22vw, (min-width: 1280px) 23.28vw, (min-width: 940px) 31.88vw, (min-width: 640px) calc(4.29vw + 255px), (min-width: 480px) 37.86vw, calc(3.75vw + 157px)"
             />
           </div>
           <p className="mb-4 hidden max-w-lg text-pretty text-base sm:block">

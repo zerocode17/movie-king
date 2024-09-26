@@ -5,6 +5,7 @@ import {
   SearchMulti200Response,
   SearchMulti200ResponseResultsInner,
 } from "@/tmbd-types/api";
+import { LoaderCircle } from "lucide-react";
 
 export default async function Search({
   searchParams,
@@ -35,7 +36,7 @@ export default async function Search({
   }
 
   return (
-    <div>
+    <div className="pb-10">
       <div className="container mx-auto mt-5 flex flex-col items-center px-4 2xl:mt-32">
         <h1 className="glow hidden text-8xl font-bold uppercase transition-all delay-300 duration-300 animate-in fade-in 2xl:block">
           Movie King
@@ -54,6 +55,12 @@ export default async function Search({
               </div>
             ))}
         </div>
+        {results && results.length === 0 && query && (
+          <div className="mt-10 text-2xl">No results found</div>
+        )}
+        {!results && query && (
+          <LoaderCircle className="mx-auto mt-5 size-10 animate-spin" />
+        )}
       </div>
     </div>
   );

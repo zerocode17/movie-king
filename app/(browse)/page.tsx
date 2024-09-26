@@ -113,9 +113,11 @@ export default async function Home() {
   }
 
   return (
-    <main className="">
+    <main className="relative">
       <FeaturedMovie id={id.toString()} type={type} />
-      <MainCatalog data={content} />
+      <div className="relative">
+        <MainCatalog data={content} />
+      </div>
     </main>
   );
 }
