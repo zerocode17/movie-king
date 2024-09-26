@@ -160,7 +160,7 @@ export default function NavSearch() {
                   ))}
               </ul>
             )}
-            {(!isLoading && !data) || data?.results?.length === 0 ? (
+            {(!isLoading && !data) || data?.results?.length === 0 || error ? (
               <p className="text-center text-sm text-muted-foreground">
                 No results found
               </p>

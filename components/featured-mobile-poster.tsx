@@ -22,7 +22,6 @@ export default function FeaturedMobile({
   film: Film;
 }) {
   const colorThief = new ColorThief();
-  let mainColor: number[];
 
   return (
     <>

@@ -13,7 +13,7 @@ export default function SearchInput() {
 
   useEffect(() => {
     params.get("query") && setSearchQuery(params.get("query") ?? "");
-  }, []);
+  }, [params]);
 
   const debounced = useDebouncedCallback(
     (query: string) => router.push(`/search?query=${query}`),

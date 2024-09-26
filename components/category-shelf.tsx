@@ -6,13 +6,12 @@ import {
   TrendingAll200ResponseResultsInner,
 } from "@/tmbd-types/api";
 import { SwiperSlide, Swiper, SwiperClass } from "swiper/react";
-import Image from "next/image";
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef, useState } from "react";
 
 import "swiper/css";
 import "@/app/globals.css";
-import Link from "next/link";
+
 import FilmPoster from "./film-poster";
 
 export default function CategoryShelf({
@@ -30,12 +29,6 @@ export default function CategoryShelf({
   const swiperRef = useRef<SwiperClass>();
   const [isBeginning, setIsBeginning] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(0);
-
-  useEffect(() => {
-    const width = window.screen.width;
-    setScreenWidth(width);
-  }, []);
 
   return (
     <div className="relative mb-14">

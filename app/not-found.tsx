@@ -7,7 +7,7 @@ export default function NotFound() {
       <div className="space-y-6 text-center">
         <h1 className="text-4xl font-bold">404 - Page Not Found</h1>
         <p className="mx-auto max-w-md text-xl text-muted-foreground">
-          Oops! It seems the scene you're looking for is not in our reel.
+          Oops! It seems the scene you&apos;re looking for is not in our reel.
         </p>
         <Button asChild className="mt-8">
           <Link href="/">Back to Home</Link>

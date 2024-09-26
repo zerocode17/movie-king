@@ -10,7 +10,7 @@ export default function ErrorUi() {
         <AlertCircle className="mx-auto h-12 w-12 text-destructive" />
         <h1 className="text-2xl font-semibold">Oops! Something went wrong</h1>
         <p className="text-muted-foreground">
-          We couldn't load the data for this page.
+          We couldn&apos;t load the data for this page.
         </p>
         <Button onClick={() => window.location.reload()} variant="outline">
           Try Again
