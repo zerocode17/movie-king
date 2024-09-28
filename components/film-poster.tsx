@@ -26,7 +26,7 @@ export default function FilmPoster({
           <Link
             href={`${type === "movie" ? "movie" : type === "tv" ? "tv" : (film as TrendingAll200ResponseResultsInner).media_type}/${film.id}`}
           >
-            <div className="relative aspect-[2/3] w-full overflow-hidden rounded-sm transition-transform duration-300 ease-in-out group-hover:scale-105">
+            <div className="relative aspect-[2/3] w-full overflow-hidden rounded-sm transition-transform duration-300 ease-in-out sm:group-hover:scale-105">
               <Image
                 src={`https://image.tmdb.org/t/p/w500${film.poster_path}`}
                 alt={`Poster`}
@@ -34,9 +34,9 @@ export default function FilmPoster({
                 fill
                 sizes="(min-width: 640px) 185px, 120px"
               />
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-opacity duration-300 group-hover:bg-opacity-50">
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-opacity duration-300 sm:group-hover:bg-opacity-50">
                 <Play
-                  className="scale-50 transform text-white opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+                  className="scale-50 transform text-white opacity-0 transition-all duration-300 sm:group-hover:scale-100 sm:group-hover:opacity-100"
                   size={48}
                 />
               </div>

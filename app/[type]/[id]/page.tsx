@@ -87,7 +87,7 @@ export default async function FilmDetails({
 
       {/* div with main info */}
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 py-20 lg:flex-row">
-        <div className="relative aspect-[2/3] w-full max-w-sm overflow-hidden rounded-lg shadow-2xl sm:mt-16">
+        <div className="relative aspect-[2/3] h-auto w-full max-w-sm overflow-hidden rounded-lg shadow-2xl sm:mt-16">
           <Image
             src={
               film.poster_path
