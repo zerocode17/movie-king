@@ -7,7 +7,6 @@ import Image from "next/image";
 import fallbackImage from "/public/fallback.svg";
 import { redirect } from "next/navigation";
 import BackButton from "@/components/back-button";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function FilmDetails({
   params,

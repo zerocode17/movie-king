@@ -2,7 +2,7 @@
 
 import FilmPoster from "@/components/film-poster";
 import { TrendingAll200Response } from "@/tmbd-types/api";
-import { LoaderCircleIcon, ArrowUpCircle, ChevronUp } from "lucide-react";
+import { LoaderCircleIcon, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function TvShows() {

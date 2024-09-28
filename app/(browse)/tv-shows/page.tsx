@@ -2,13 +2,14 @@
 
 import FilmPoster from "@/components/film-poster";
 import { TrendingTv200Response } from "@/tmbd-types/api";
-import { LoaderCircleIcon } from "lucide-react";
+import { LoaderCircleIcon, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function TvShows() {
   const [tvShows, setTvShows] = useState<TrendingTv200Response["results"]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [showUpButton, setShowUpButton] = useState(false);
 
   const fetchMovies = async (page: number) => {
     setLoading(true);
@@ -36,6 +37,13 @@ export default function TvShows() {
 
   useEffect(() => {
     const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+
+      // Show up button when scrolled down one page
+      setShowUpButton(scrollTop > windowHeight);
+
+      // Infinite scroll logic
       if (
         window.innerHeight + document.documentElement.scrollTop <=
           document.documentElement.offsetHeight - 100 ||
@@ -49,6 +57,10 @@ export default function TvShows() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading]);
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="container mx-auto px-4">
       <h1 className="mt-14 text-4xl font-bold">Trending TV Shows</h1>
@@ -61,6 +73,15 @@ export default function TvShows() {
         <div className="w-full pb-20">
           <LoaderCircleIcon className="mx-auto size-10 animate-spin" />
         </div>
+      )}
+      {showUpButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 rounded-full p-2 text-foreground transition-opacity hover:bg-background/90"
+          aria-label="Scroll to top"
+        >
+          <ChevronUp className="size-8" />
+        </button>
       )}
     </div>
   );
