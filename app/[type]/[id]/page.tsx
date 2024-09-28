@@ -88,21 +88,20 @@ export default async function FilmDetails({
 
       {/* div with main info */}
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 py-20 lg:flex-row">
-        <div className="relative w-full max-w-sm overflow-hidden rounded-lg shadow-2xl sm:mt-16">
-          <div className="aspect-[2/3]">
-            <Image
-              src={
-                film.poster_path
-                  ? `https://image.tmdb.org/t/p/w500/${film.poster_path}`
-                  : fallbackImage
-              }
-              alt={`${title} poster`}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 384px"
-              priority
-            />
-          </div>
+        <div className="w-full max-w-sm rounded-lg shadow-2xl sm:mt-16">
+          <Image
+            src={
+              film.poster_path
+                ? `https://image.tmdb.org/t/p/w500/${film.poster_path}`
+                : fallbackImage
+            }
+            alt={`${title} poster`}
+            width={384}
+            height={576}
+            className="h-auto w-full rounded-lg object-cover"
+            sizes="(max-width: 768px) 100vw, 384px"
+            priority
+          />
         </div>
 
         {/* main content area */}
