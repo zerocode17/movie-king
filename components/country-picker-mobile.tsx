@@ -74,7 +74,7 @@ export default function CountryPickerMobile({
       </DialogTrigger>
       <DialogContent
         aria-describedby="country-picker-mobile-description"
-        className={`max-w-[350px] gap-0 rounded-md p-0 sm:max-w-[400px] ${isKeyboardVisible ? "max-sm:absolute max-sm:top-[5%] max-sm:translate-y-0 sm:static sm:top-auto sm:translate-y-0" : ""}`}
+        className={`"max-sm:absolute sm:translate-y-0" max-w-[350px] gap-0 rounded-md p-0 max-sm:top-[5%] max-sm:translate-y-0 sm:static sm:top-auto sm:max-w-[400px]`}
       >
         <DialogHeader className="border-b py-3">
           <DialogTitle>Select a country</DialogTitle>
