@@ -7,6 +7,7 @@ import Image from "next/image";
 import fallbackImage from "/public/fallback.svg";
 import { redirect } from "next/navigation";
 import BackButton from "@/components/back-button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function FilmDetails({
   params,
@@ -87,19 +88,21 @@ export default async function FilmDetails({
 
       {/* div with main info */}
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 py-20 lg:flex-row">
-        <div className="relative aspect-[2/3] h-auto w-full max-w-sm overflow-hidden rounded-lg shadow-2xl sm:mt-16">
-          <Image
-            src={
-              film.poster_path
-                ? `https://image.tmdb.org/t/p/w500/${film.poster_path}`
-                : fallbackImage
-            }
-            alt={`${title} poster`}
-            fill
-            className="object-scale-down"
-            sizes="(max-width: 768px) 100vw, 384px"
-            priority
-          />
+        <div className="relative w-full max-w-sm overflow-hidden rounded-lg shadow-2xl sm:mt-16">
+          <div className="aspect-[2/3]">
+            <Image
+              src={
+                film.poster_path
+                  ? `https://image.tmdb.org/t/p/w500/${film.poster_path}`
+                  : fallbackImage
+              }
+              alt={`${title} poster`}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 384px"
+              priority
+            />
+          </div>
         </div>
 
         {/* main content area */}

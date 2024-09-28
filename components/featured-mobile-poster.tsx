@@ -65,7 +65,7 @@ export default function FeaturedMobile({
                   if (color) {
                     const rgb = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
                     if (img.parentElement) {
-                      img.parentElement.style.boxShadow = `0 25px 50px -12px ${rgb}`;
+                      img.parentElement.style.boxShadow = `0 10px 50px 6px ${rgb}`;
                     }
                   }
                 }}

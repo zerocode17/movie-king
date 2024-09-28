@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { WatchProvidersAvailableRegions200ResponseResultsInner } from "@/tmbd-types/api";
 import ReactCountryFlag from "react-country-flag";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CountryPickerMobile({
   valueList,
@@ -31,6 +31,17 @@ export default function CountryPickerMobile({
   setValue: (value: string) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const isKeyboard = window.innerHeight < window.outerHeight;
+      setIsKeyboardVisible(isKeyboard);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   if (!valueList) {
     return null;
@@ -61,7 +72,10 @@ export default function CountryPickerMobile({
           <ChevronDown className={`${open ? "rotate-180" : ""} duration-300`} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[350px] gap-0 rounded-md p-0 sm:max-w-[400px]">
+      <DialogContent
+        aria-describedby="country-picker-mobile-description"
+        className={`max-w-[350px] gap-0 rounded-md p-0 sm:max-w-[400px] ${isKeyboardVisible ? "max-sm:absolute max-sm:top-[5%] max-sm:translate-y-0 sm:static sm:top-auto sm:translate-y-0" : ""}`}
+      >
         <DialogHeader className="border-b py-3">
           <DialogTitle>Select a country</DialogTitle>
         </DialogHeader>
