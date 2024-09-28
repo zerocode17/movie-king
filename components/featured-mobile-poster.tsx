@@ -22,18 +22,21 @@ export default function FeaturedMobile({
   type: "movie" | "tv" | "all";
   film: Film;
 }) {
-  const [screenWidth, setScreenWidth] = useState<number>();
+  const [screenWidth, setScreenWidth] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
     };
 
+    // Set initial width
+    handleResize();
+
+    // Add event listener
     window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    // Clean up
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const colorThief = new ColorThief();
@@ -56,7 +59,7 @@ export default function FeaturedMobile({
                 onLoad={(event) => {
                   const img = event.target as HTMLImageElement;
                   let color;
-                  if (img && screenWidth && screenWidth > 640) {
+                  if (img && screenWidth && screenWidth < 640) {
                     color = colorThief?.getColor(img);
                   }
                   if (color) {
