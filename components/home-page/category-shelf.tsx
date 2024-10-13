@@ -6,6 +6,7 @@ import {
   TrendingAll200ResponseResultsInner,
 } from "@/tmbd-types/api";
 import { SwiperSlide, Swiper, SwiperClass } from "swiper/react";
+import { FreeMode } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -46,9 +47,11 @@ export default function CategoryShelf({
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
           }}
+          modules={[FreeMode]}
           onSlideChange={(swiper) => {
             setIsBeginning(swiper.isBeginning);
           }}
+          freeMode={{ enabled: true, sticky: true }}
           slidesPerView={"auto"}
           spaceBetween={8}
           breakpoints={{
@@ -56,6 +59,8 @@ export default function CategoryShelf({
               slidesPerGroup: 1,
               slidesPerGroupAuto: true,
               spaceBetween: 16,
+              shortSwipes: true,
+              freeMode: false,
             },
           }}
         >
