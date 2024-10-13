@@ -53,10 +53,6 @@ export default function CategoryShelf({
           }}
           freeMode={{
             enabled: true,
-            sticky: true,
-            minimumVelocity: 0,
-            momentumRatio: 0.15,
-            momentumVelocityRatio: 0.5,
           }}
           slidesPerView={"auto"}
           spaceBetween={8}
