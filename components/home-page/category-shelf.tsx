@@ -51,7 +51,13 @@ export default function CategoryShelf({
           onSlideChange={(swiper) => {
             setIsBeginning(swiper.isBeginning);
           }}
-          freeMode={{ enabled: true, sticky: true }}
+          freeMode={{
+            enabled: true,
+            sticky: true,
+            minimumVelocity: 0,
+            momentumRatio: 0.15,
+            momentumVelocityRatio: 0.5,
+          }}
           slidesPerView={"auto"}
           spaceBetween={8}
           breakpoints={{
