@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { WatchProvidersAvailableRegions200ResponseResultsInner } from "@/tmbd-types/api";
 import ReactCountryFlag from "react-country-flag";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function CountryPickerMobile({
   valueList,
@@ -31,17 +31,6 @@ export default function CountryPickerMobile({
   setValue: (value: string) => void;
 }) {
   const [open, setOpen] = useState(false);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const isKeyboard = window.innerHeight < window.outerHeight;
-      setIsKeyboardVisible(isKeyboard);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   if (!valueList) {
     return null;
