@@ -4,7 +4,7 @@ import FeaturedMovie from "@/components/featured-movie";
 import { Content } from "@/lib/types";
 import { TrendingAll200ResponseResultsInner } from "@/tmbd-types/api";
 
-export const revalidate = 60 * 60 * 12;
+export const revalidate = 60 * 60 * 4;
 
 export default async function Home() {
   const options = {
