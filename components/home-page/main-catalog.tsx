@@ -1,5 +1,5 @@
 import CategoryShelf from "./category-shelf";
-import { Content } from "@/lib/types";
+import { Content } from "@/lib/types/types";
 
 export default function MainCatalog({ data }: { data: Content[] }) {
   return (

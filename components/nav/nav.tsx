@@ -79,9 +79,9 @@ export default function Nav() {
               <NavSearch />
             </div>
           )}
-          <button aria-label="User profile">
+          <Link href={"/login"} aria-label="User profile">
             <User className="size-6 text-muted-foreground hover:text-foreground" />
-          </button>
+          </Link>
         </div>
       </div>
     </header>

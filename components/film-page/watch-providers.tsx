@@ -1,6 +1,6 @@
 "use client";
 
-import { Movie } from "@/lib/types";
+import { Movie } from "@/lib/types/types";
 import {
   MovieWatchProviders200ResponseResultsDEBuyInner,
   MovieWatchProviders200ResponseResultsUS,

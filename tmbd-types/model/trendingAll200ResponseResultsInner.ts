@@ -16,6 +16,7 @@ export class TrendingAll200ResponseResultsInner {
   "adult"?: boolean = true;
   "backdrop_path"?: string;
   "id"?: number = 0;
+  "name"?: string;
   "title"?: string;
   "original_language"?: string;
   "original_name"?: string;

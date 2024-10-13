@@ -1,5 +1,5 @@
-import FilmPoster from "@/components/film-poster";
-import SearchInput from "@/components/search-input";
+import FilmPoster from "@/components/home-page/film-poster";
+import SearchInput from "@/components/search/search-input";
 import { FilterSearch } from "@/lib/filter-search";
 import {
   SearchMulti200Response,

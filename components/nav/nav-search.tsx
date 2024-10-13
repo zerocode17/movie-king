@@ -3,8 +3,8 @@
 import { X, Search, LoaderCircle } from "lucide-react";
 import { useState, useRef } from "react";
 import { useDebounce } from "use-debounce";
-import { Input } from "./ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Input } from "../ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import useSWR from "swr";
 import { SearchMulti200Response } from "@/tmbd-types/api";
 import Image from "next/image";

@@ -1,7 +1,7 @@
 import ErrorUi from "@/components/error-ui";
-import MainCatalog from "@/components/main-catalog";
-import FeaturedMovie from "@/components/featured-movie";
-import { Content } from "@/lib/types";
+import MainCatalog from "@/components/home-page/main-catalog";
+import FeaturedMovie from "@/components/home-page/featured-movie";
+import { Content } from "@/lib/types/types";
 import { TrendingAll200ResponseResultsInner } from "@/tmbd-types/api";
 
 export const revalidate = 60 * 60 * 12;
