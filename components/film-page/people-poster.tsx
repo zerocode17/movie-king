@@ -3,7 +3,6 @@ import {
   TvSeriesCredits200ResponseCastInner,
 } from "@/tmbd-types/api";
 import Image from "next/image";
-import { Skeleton } from "../ui/skeleton";
 import { User } from "lucide-react";
 
 export default function PeoplePoster({
