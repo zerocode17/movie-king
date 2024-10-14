@@ -1,21 +1,21 @@
-import { Button } from "@/components/ui/button";
 import WatchProviders from "@/components/film-page/watch-providers";
 import { Movie, TvShow } from "@/lib/types/types";
 import { WatchProvidersAvailableRegions200Response } from "@/tmbd-types/api";
-import { Play, StarIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import fallbackImage from "/public/fallback.svg";
 import { redirect } from "next/navigation";
 import BackButton from "@/components/film-page/back-button";
 import Video from "@/components/film-page/video";
 import Credits from "@/components/film-page/credits";
+import PlayDialog from "@/components/watch-options/play-dialog";
 
 export default async function FilmDetails({
   params,
 }: {
   params: { id: string; type: string };
 }) {
-  const { type } = params;
+  const { type, id } = params;
   if (type !== "movie" && type !== "tv") {
     redirect("/404");
   }
@@ -32,7 +32,7 @@ export default async function FilmDetails({
   };
 
   const response = await fetch(
-    `https://api.themoviedb.org/3/${params.type}/${params.id}?language=en-US&append_to_response=watch/providers,videos,credits`,
+    `https://api.themoviedb.org/3/${type}/${id}?language=en-US&append_to_response=watch/providers,videos,credits`,
     options,
   );
 
@@ -163,12 +163,7 @@ export default async function FilmDetails({
 
           {/* play button and watch providers */}
           <div className="relative flex w-full flex-col items-center justify-between sm:flex-row sm:items-start">
-            <Button
-              size="lg"
-              className="z-10 mb-12 text-lg font-bold sm:mb-0 sm:mt-20"
-            >
-              <Play className="mr-2 size-6" fill="black" /> Play
-            </Button>
+            <PlayDialog id={id} type={type} />
 
             {watchProvidersExist && (
               <div className="flex w-full justify-center pt-10 sm:justify-end sm:pl-4 md:pt-0">
