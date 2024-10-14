@@ -39,8 +39,8 @@ export default function WatchSources({
       <div className="pt-6">
         {tab === "streaming" && (
           <ul>
-            {streamingSources.map((source) => (
-              <li className="pt-2">
+            {streamingSources.map((source, index) => (
+              <li className="pt-2" key={index}>
                 <Link
                   href={`${source}${type}/${id}`}
                   className="hover:underline"
