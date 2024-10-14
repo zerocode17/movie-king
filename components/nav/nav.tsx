@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, User } from "lucide-react";
+import { Github, Search, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import NavSearch from "./nav-search";
 import { usePathname } from "next/navigation";
@@ -79,9 +79,16 @@ export default function Nav() {
               <NavSearch />
             </div>
           )}
-          <button aria-label="User profile">
+          <Link href={"/login"} aria-label="User profile">
             <User className="size-6 text-muted-foreground hover:text-foreground" />
-          </button>
+          </Link>
+          <Link
+            href={"https://github.com/zerocode17/movie-king"}
+            aria-label="github"
+            target="_blank"
+          >
+            <Github className="size-6 text-muted-foreground hover:text-foreground" />
+          </Link>
         </div>
       </div>
     </header>

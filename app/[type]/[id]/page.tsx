@@ -1,19 +1,21 @@
-import { Button } from "@/components/ui/button";
-import WatchProviders from "@/components/watch-providers";
-import { Movie, TvShow } from "@/lib/types";
+import WatchProviders from "@/components/film-page/watch-providers";
+import { Movie, TvShow } from "@/lib/types/types";
 import { WatchProvidersAvailableRegions200Response } from "@/tmbd-types/api";
-import { Play, StarIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import fallbackImage from "/public/fallback.svg";
 import { redirect } from "next/navigation";
-import BackButton from "@/components/back-button";
+import BackButton from "@/components/film-page/back-button";
+import Video from "@/components/film-page/video";
+import Credits from "@/components/film-page/credits";
+import PlayDialog from "@/components/watch-options/play-dialog";
 
 export default async function FilmDetails({
   params,
 }: {
   params: { id: string; type: string };
 }) {
-  const { type } = params;
+  const { type, id } = params;
   if (type !== "movie" && type !== "tv") {
     redirect("/404");
   }
@@ -24,10 +26,13 @@ export default async function FilmDetails({
       accept: "application/json",
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN}`,
     },
+    next: {
+      revalidate: 60 * 60,
+    },
   };
 
   const response = await fetch(
-    `https://api.themoviedb.org/3/${params.type}/${params.id}?language=en-US&append_to_response=watch/providers`,
+    `https://api.themoviedb.org/3/${type}/${id}?language=en-US&append_to_response=watch/providers,videos,credits`,
     options,
   );
 
@@ -37,8 +42,7 @@ export default async function FilmDetails({
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDkzNmNiNjI3ZDQxMzY2MWQ2NGM2YTBjMzNlM2U2ZCIsIm5iZiI6MTcyNjQ0MDkzOC4wODg4MzgsInN1YiI6IjY2ZGNhZjgxZTRmMjVlMTg1MmU0MTQxNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AYLDR2U6KZAZGRMIIAcVmiY4PdhnlAHACkI28fVli_Q",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN}`,
       },
       next: {
         revalidate: 604800,
@@ -66,11 +70,20 @@ export default async function FilmDetails({
   }
 
   const watchProviders = film["watch/providers"].results;
+  const videos = film["videos"].results;
+  const credits = film["credits"];
+
+  let watchProvidersExist = false;
+  if (watchProviders) {
+    watchProvidersExist = Object.entries(watchProviders).some((region) =>
+      Object.values(region).some((mediaType) => mediaType.length > 0),
+    );
+  }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-black text-white">
+    <div className="relative flex min-h-screen flex-col items-center justify-center pb-20">
       {/* background image */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 -z-10 max-h-lvh">
         <Image
           src={`https://image.tmdb.org/t/p/w1280/${film.backdrop_path}`}
           alt={`${title} Backdrop image`}
@@ -86,7 +99,7 @@ export default async function FilmDetails({
       <BackButton />
 
       {/* div with main info */}
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 py-20 lg:flex-row">
+      <div className="relative z-10 mx-auto flex h-max w-full max-w-6xl flex-col items-start gap-12 px-6 pb-10 pt-20 lg:flex-row">
         <div className="w-full max-w-sm rounded-lg shadow-2xl sm:mt-16">
           <Image
             src={
@@ -104,7 +117,7 @@ export default async function FilmDetails({
         </div>
 
         {/* main content area */}
-        <div className="flex w-full max-w-2xl flex-col items-start">
+        <div className="flex w-full max-w-2xl flex-col items-start sm:mt-16">
           <h1 className="mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
             {title}
           </h1>
@@ -150,21 +163,24 @@ export default async function FilmDetails({
 
           {/* play button and watch providers */}
           <div className="relative flex w-full flex-col items-center justify-between sm:flex-row sm:items-start">
-            <Button
-              size="lg"
-              className="z-10 mb-12 text-lg font-bold sm:mb-0 sm:mt-20"
-            >
-              <Play className="mr-2 size-6" fill="black" /> Play
-            </Button>
+            <PlayDialog id={id} type={type} />
 
-            <div className="absolute flex w-full justify-center pb-20 pt-24 sm:justify-end sm:pl-4 md:pt-0">
-              <WatchProviders
-                watchProviders={watchProviders}
-                availableRegions={regions.results}
-              />
-            </div>
+            {watchProvidersExist && (
+              <div className="flex w-full justify-center pt-10 sm:justify-end sm:pl-4 md:pt-0">
+                <WatchProviders
+                  watchProviders={watchProviders}
+                  availableRegions={regions.results}
+                />
+              </div>
+            )}
           </div>
         </div>
+      </div>
+
+      {/* videos and credits */}
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 pt-20 lg:gap-24">
+        {videos && <Video videos={videos} />}
+        {credits && <Credits credits={credits} />}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import FilmPoster from "@/components/film-poster";
+import FilmPoster from "@/components/home-page/film-poster";
 import { TrendingAll200Response } from "@/tmbd-types/api";
 import { LoaderCircleIcon, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";

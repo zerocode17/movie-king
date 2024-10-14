@@ -44,7 +44,7 @@ export default function FilmPoster({
           </Link>
           <p className="mt-2 truncate text-sm text-gray-200 transition-colors duration-300 group-hover:text-white sm:text-base sm:font-semibold">
             {(film as TrendingAll200ResponseResultsInner).title ||
-              (film as TrendingAll200ResponseResultsInner).original_name ||
+              (film as TrendingAll200ResponseResultsInner).name ||
               (film as DiscoverMovie200ResponseResultsInner).title ||
               (film as DiscoverTv200ResponseResultsInner).name}
           </p>
