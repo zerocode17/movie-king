@@ -31,6 +31,10 @@ export default function CategoryShelf({
   const [isBeginning, setIsBeginning] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
+  if (films.some((film) => !film.poster_path)) {
+    return null;
+  }
+
   return (
     <div className="relative mb-14">
       <h3 className="mb-3 text-2xl font-bold">{category}</h3>

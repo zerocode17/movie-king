@@ -16,7 +16,7 @@ export default async function FeaturedMovie({
   id,
   type,
 }: {
-  id: string;
+  id?: string;
   type?: "movie" | "tv";
 }) {
   const options = {
@@ -32,11 +32,12 @@ export default async function FeaturedMovie({
     options,
   );
   const featured: Featured = await response.json();
+
   const images = featured["images?language=en"];
 
-  const logoSource = images.logos && images.logos[0]?.file_path;
-  const logoWidth = images.logos && images.logos[0]?.width;
-  const logoHeight = images.logos && images.logos[0]?.height;
+  const logoSource = images?.logos && images.logos[0]?.file_path;
+  const logoWidth = images?.logos && images.logos[0]?.width;
+  const logoHeight = images?.logos && images.logos[0]?.height;
 
   return (
     <section className="relative max-h-[85vh] px-4 sm:h-[95vh]">

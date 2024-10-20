@@ -104,9 +104,9 @@ export default async function Home() {
   );
 
   const content: Content[] = await Promise.all(fetchPromises);
-  const trending = content[0].films as TrendingAll200ResponseResultsInner[];
-  const id = trending[0].id ?? "";
-  const type = trending[0].media_type as "movie" | "tv";
+  const trending = content[0].films.filter((film: TrendingAll200ResponseResultsInner) => film.media_type === "movie" || film.media_type === "tv") as TrendingAll200ResponseResultsInner[];
+  const id = trending[0]?.id ?? content[5].films[0]?.id;
+  const type = trending[0]?.media_type as "movie" | "tv" ?? content[5].type;
 
   if (!content) {
     return <ErrorUi />;
@@ -114,7 +114,7 @@ export default async function Home() {
 
   return (
     <main className="relative">
-      <FeaturedMovie id={id.toString()} type={type} />
+      <FeaturedMovie id={id?.toString()} type={type} />
       <div className="relative">
         <MainCatalog data={content} />
       </div>
